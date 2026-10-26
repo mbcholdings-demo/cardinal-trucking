@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Internal Driver Rate Calculator</title>
+<style>
+body{font:15px Arial,sans-serif;background:#f5f5f5;margin:0;padding:22px;color:#222}
+.rate-form{max-width:550px;margin:auto;padding:24px;background:white;border:1px solid #ddd;border-radius:8px}
+h2{margin-top:0;font-size:21px}label{display:block;margin:16px 0 6px;font-weight:600;font-size:14px}
+.help{cursor:help;color:#5579a0;margin-left:5px}input[type=number],input[type=date]{width:100%;box-sizing:border-box;padding:10px;border:1px solid #bbb;border-radius:5px;font-size:15px}
+.check{display:flex;gap:9px;align-items:center;margin:18px 0}.check label{margin:0}
+.result{background:#f2f5f8;border-radius:6px;padding:16px;margin:20px 0}
+#standardCost{font-size:27px;font-weight:bold;margin:10px 0}
+button{padding:8px 13px;cursor:pointer;background:#fff;border:1px solid #bbb;border-radius:5px}
+#formula{font-size:13px;line-height:1.6}table{width:100%;border-collapse:collapse;margin-top:16px}
+th,td{padding:11px;text-align:left;border-bottom:1px solid #ddd}th:last-child,td:last-child{text-align:right}
+.note{font-size:12px;color:#777;margin-top:20px}
+</style></head><body>
+<div class="rate-form"><h2>New Driver Internal Rate</h2>
+<label for="wage">Average Base Hourly Rate <span class="help" title="Estimated average base hourly wage for drivers, excluding fringe, benefits and night premiums. Used to calculate internal job costs.">ⓘ</span></label>
+<input id="wage" type="number" value="40.00" min="0" step=".01">
+<label for="fringeAmount">Approximate Fringe &amp; Benefits Amount <span class="help" title="Estimated fixed hourly cost that does not increase when wages increase.">ⓘ</span></label>
+<input id="fringeAmount" type="number" value="2.50" min="0" step=".01">
+<label for="fringePercent">Approximate Fringe &amp; Benefits Percentage <span class="help" title="Estimated wage-dependent employer costs, such as payroll taxes.">ⓘ</span></label>
+<input id="fringePercent" type="number" value="1.00" min="0" step=".01">
+<label for="nightAddOn">Night Add-On Amount <span class="help" title="Additional hourly wage for night work, before fringe and benefits are calculated.">ⓘ</span></label>
+<input id="nightAddOn" type="number" value="5.00" min="0" step=".01">
+<label for="effectiveFrom">Effective From</label><input id="effectiveFrom" type="date" value="2026-10-21">
+<div class="check"><input id="prevailingWage" type="checkbox"><label for="prevailingWage">Prevailing Wage Rate</label></div>
+<div class="result"><strong>Estimated Standard Internal Cost / Hour</strong><div id="standardCost"></div>
+<button type="button" id="toggleFormula">Show calculation</button><p id="formula" hidden></p></div>
+<table><thead><tr><th>Rate Type</th><th>Internal Cost / Hour</th></tr></thead><tbody>
+<tr><td>Standard</td><td id="standardRow"></td></tr><tr><td>Night</td><td id="nightRow"></td></tr>
+<tr><td>Overtime (1.5×)</td><td id="overtimeRow"></td></tr><tr><td>Double Time (2×)</td><td id="doubleRow"></td></tr>
+</tbody></table><p class="note">Demo only. No database changes. Prevailing Wage labels the rate type and does not alter this calculation.</p></div>
+<script>
+const ids=["wage","fringeAmount","fringePercent","nightAddOn"];
+const el=id=>document.getElementById(id),num=id=>Math.max(0,Number(el(id).value)||0),money=n=>"$"+n.toFixed(2);
+function calculate(){
+const w=num("wage"),f=num("fringeAmount"),p=num("fringePercent")/100,n=num("nightAddOn");
+const cost=rate=>rate+f+rate*p;
+el("standardCost").textContent=money(cost(w))+" / hour";
+el("standardRow").textContent=money(cost(w));el("nightRow").textContent=money(cost(w+n));
+el("overtimeRow").textContent=money(cost(w*1.5));el("doubleRow").textContent=money(cost(w*2));
+el("formula").textContent=money(w)+" + "+money(f)+" + ("+money(w)+" × "+(p*100).toFixed(2)+"%) = "+money(cost(w))+" per hour";
+}
+ids.forEach(id=>el(id).addEventListener("input",calculate));
+el("toggleFormula").addEventListener("click",function(){el("formula").hidden=!el("formula").hidden;this.textContent=el("formula").hidden?"Show calculation":"Hide calculation";});calculate();
+</script></body></html>
