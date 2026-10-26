@@ -17,7 +17,7 @@ th,td{padding:11px;text-align:left;border-bottom:1px solid #ddd}th:last-child,td
 <div class="rate-form"><h2>New Internal Rate</h2>
 <label for="appliesTo">Applies to</label>
 <select id="appliesTo"><option value="driver">Driver</option><option value="equipment">Equipment</option></select>
-<div id="equipmentSelect" hidden><label for="equipmentType">Equipment type</label><select id="equipmentType"><option>6-AXLE</option><option>7-AXLE</option><option>Dump Trailer</option><option>Dump Truck</option><option>QUAD</option><option>Quarry Truck</option><option>QUIN</option><option>SEMI</option><option>TANDEM</option><option>Trailer</option><option>TRI-AXLE</option></select></div>
+<div id="equipmentSelect" hidden><label for="equipmentType">Equipment type</label><select id="equipmentType"><option value="" selected disabled>Select equipment...</option><option>6-AXLE</option><option>7-AXLE</option><option>Dump Trailer</option><option>Dump Truck</option><option>QUAD</option><option>Quarry Truck</option><option>QUIN</option><option>SEMI</option><option>TANDEM</option><option>Trailer</option><option>TRI-AXLE</option></select></div>
 <label for="wage"><span id="wageLabel">Average Base Hourly Rate</span> <span class="help" title="Estimated average base hourly wage for drivers, excluding fringe, benefits and night premiums. Used to calculate internal job costs.">ⓘ</span></label>
 <input id="wage" type="number" value="40.00" min="0" step=".01">
 <div class="driverOnly"><label for="fringeAmount">Approximate Fringe &amp; Benefits Amount <span class="help" title="Estimated fixed hourly cost that does not increase when wages increase.">ⓘ</span></label>
