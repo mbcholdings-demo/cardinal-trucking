@@ -3,18 +3,21 @@
 </style></head><body><div class="panel"><div class="header">▣ &nbsp;New Hourly Rate</div><div class="savebar"><button id="save" type="button">▣ &nbsp;Save rate</button> <span id="status" class="note"></span></div><div class="body">
 <div class="field"><label class="required" for="scope">Applies at</label><select id="scope"><option>Customer level — all jobs</option><option>Job level — selected job</option></select></div>
 <div class="field"><label for="equipment">Equipment type</label><select id="equipment"><option>All equipment</option><option>6-AXLE</option><option>7-AXLE</option><option>Dump Trailer</option><option>Dump Truck</option><option>QUAD</option><option>Quarry Truck</option><option>QUIN</option><option>SEMI</option><option>TANDEM</option><option>Test Equipment Type</option><option>Test Equipment Type 2</option><option>Trailer</option><option>TRI-AXLE</option></select></div>
-<div class="rate-grid"><div class="field"><label class="required" for="base">Rate / hour</label><input id="base" type="number" min="0" step=".01" value="95.00"></div><div class="field"><label for="pw">Prevailing Wage Rate / Hour <span class="tip" title="Separate hourly rate for prevailing wage work, if applicable.">ⓘ</span></label><input id="pw" type="number" min="0" step=".01" placeholder="Optional"></div></div>
+<div class="field"><label class="required" for="base">Rate / hour</label><input id="base" type="number" min="0" step=".01" value="95.00"></div>
 <div class="field"><label class="required" for="effective">Effective from</label><input id="effective" type="date" value="2026-10-23"></div>
 <section class="section"><h3>Additional Hourly Rates</h3><p class="subtitle">Amounts added to the applicable hourly rate when the condition applies.</p><div class="grid">
+<div class="field"><label for="rough">Rough Hauling Add-On / Hour</label><input id="rough" type="number" min="0" step=".01" value="0.00"></div>
+<div class="field"><label for="pw">Prevailing Wage Add-On / Hour</label><input id="pw" type="number" min="0" step=".01" value="0.00"></div>
+<div class="field"><label for="tail">Tailgating Add-On / Hour</label><input id="tail" type="number" min="0" step=".01" value="0.00"></div>
 <div class="field"><label for="night">Night Work Add-On / Hour</label><input id="night" type="number" min="0" step=".01" value="0.00"></div>
 <div class="field"><label for="sat">Saturday Add-On / Hour</label><input id="sat" type="number" min="0" step=".01" value="0.00"></div>
 <div class="field"><label for="sun">Sunday Add-On / Hour</label><input id="sun" type="number" min="0" step=".01" value="0.00"></div></div></section>
 <section class="section"><h3>Material-Specific Add-On Rates</h3><p class="subtitle">Choose materials that require an additional hourly charge. Add as many materials as needed, each with its own rate.</p><div id="materialRows"></div><button type="button" id="addMaterial">+ Add material add-on</button></section>
-<section class="section"><h3>Calculated Rate Preview</h3><p class="subtitle">Choose work conditions and a material to preview the adjusted hourly rate.</p><div class="options">
-<label><input id="previewPW" type="checkbox"> Prevailing Wage</label><label><input id="previewNight" type="checkbox"> Night Work</label><label><input id="previewSat" type="checkbox"> Saturday</label><label><input id="previewSun" type="checkbox"> Sunday</label></div>
+<section class="section"><h3>Calculated Rate Preview</h3><p class="subtitle">Choose work conditions and a material to preview the adjusted hourly rate.</p><div class="field"><label for="fuel">Fuel surcharge (%)</label><input id="fuel" type="number" min="0" step=".01" value="0.00"></div><div class="options">
+<label><input id="previewRough" type="checkbox"> Rough Hauling</label><label><input id="previewTail" type="checkbox"> Tailgating</label><label><input id="previewPW" type="checkbox"> Prevailing Wage</label><label><input id="previewNight" type="checkbox"> Night Work</label><label><input id="previewSat" type="checkbox"> Saturday</label><label><input id="previewSun" type="checkbox"> Sunday</label></div>
 <div class="field"><label for="previewMaterial">Preview material</label><select id="previewMaterial"><option value="">No material add-on</option></select></div>
-<div class="summary"><table><tr><td>Applicable base hourly rate</td><td id="baseOut"></td></tr><tr><td>Night work add-on</td><td id="nightOut"></td></tr><tr><td>Saturday add-on</td><td id="satOut"></td></tr><tr><td>Sunday add-on</td><td id="sunOut"></td></tr><tr><td>Material add-on</td><td id="materialOut"></td></tr><tr><td>Calculated rate / hour</td><td class="total" id="totalOut"></td></tr></table></div>
-<p class="note">Demonstration only. Fuel surcharge is not included in this preview. Saving does not write to the application database.</p></section></div></div>
+<div class="summary"><table><tr><td>Base hourly rate</td><td id="baseOut"></td></tr><tr><td>Fuel surcharge (base rate only)</td><td id="fuelOut"></td></tr><tr><td>Rough hauling add-on</td><td id="roughOut"></td></tr><tr><td>Prevailing wage add-on</td><td id="pwOut"></td></tr><tr><td>Tailgating add-on</td><td id="tailOut"></td></tr><tr><td>Night work add-on</td><td id="nightOut"></td></tr><tr><td>Saturday add-on</td><td id="satOut"></td></tr><tr><td>Sunday add-on</td><td id="sunOut"></td></tr><tr><td>Material add-on</td><td id="materialOut"></td></tr><tr><td>Calculated rate / hour</td><td class="total" id="totalOut"></td></tr></table></div>
+<p class="note">Demonstration only. Fuel surcharge applies to the base hourly rate, before hourly add-ons. Saving does not write to the application database.</p></section></div></div>
 <script>
 const materials=["# 1 Topsoil","# 10 Screenings","# 3 Topsoil","2NS","Roof Rock","1's & 2\"s","21A","23A","304LS","310 Mini Berm","34G","3X1 MDOT","4LS","411LS","46G","46R","4G MDOT","6/57LS","703.16 B","703.16 C","703.16 D","8LS","9's","Lime","Asphalt","Millings","Barrier Wall","Class 2","Class 3","Fill Dirt","Dirt Spoils","Man Sand","Mason Sand","Misc Onsite","Oversize Topsoil","Rip rap Plain","Rough","Shop","Shot Rock","Slabs","A-Rock","B- Rock","C-Granular","C-Rock","D-Rock","D-Granular","Yellow Sand"];
 const $=id=>document.getElementById(id),value=id=>Math.max(0,Number($(id).value)||0),money=n=>"$"+n.toFixed(2);
@@ -24,9 +27,27 @@ const rateBox=document.createElement("div"),rLabel=document.createElement("label
 const remove=document.createElement("button");remove.type="button";remove.textContent="Remove";row.append(box,rateBox,remove);$("materialRows").append(row);
 row.querySelector(".mat-name").addEventListener("change",refreshMaterials);rate.addEventListener("input",update);remove.addEventListener("click",()=>{row.remove();refreshMaterials()});refreshMaterials();}
 function refreshMaterials(){const selected=$("previewMaterial").value,p=$("previewMaterial");p.replaceChildren(new Option("No material add-on",""));document.querySelectorAll(".mat-name").forEach(el=>{if(el.value&&!Array.from(p.options).some(o=>o.value===el.value))p.add(new Option(el.value,el.value));});if(Array.from(p.options).some(o=>o.value===selected))p.value=selected;update();}
-function update(){const hasPW=$("pw").value.trim()!=="";$("previewPW").disabled=!hasPW;if(!hasPW)$("previewPW").checked=false;const base=$("previewPW").checked?value("pw"):value("base"),night=$("previewNight").checked?value("night"):0,sat=$("previewSat").checked?value("sat"):0,sun=$("previewSun").checked?value("sun"):0;let materialAmount=0,chosen=$("previewMaterial").value;
+function update(){
+const base=value("base"),fuel=base*value("fuel")/100;
+const rough=$("previewRough").checked?value("rough"):0;
+const pw=$("previewPW").checked?value("pw"):0;
+const tail=$("previewTail").checked?value("tail"):0;
+const night=$("previewNight").checked?value("night"):0;
+const sat=$("previewSat").checked?value("sat"):0;
+const sun=$("previewSun").checked?value("sun"):0;
+let materialAmount=0,chosen=$("previewMaterial").value;
 document.querySelectorAll(".material-row").forEach(row=>{if(chosen&&row.querySelector(".mat-name").value===chosen)materialAmount+=Math.max(0,Number(row.querySelector(".mat-rate").value)||0)});
-$("baseOut").textContent=money(base);$("nightOut").textContent=money(night);$("satOut").textContent=money(sat);$("sunOut").textContent=money(sun);$("materialOut").textContent=money(materialAmount);$("totalOut").textContent=money(base+night+sat+sun+materialAmount);}
+$("baseOut").textContent=money(base);
+$("fuelOut").textContent=money(fuel);
+$("roughOut").textContent=money(rough);
+$("pwOut").textContent=money(pw);
+$("tailOut").textContent=money(tail);
+$("nightOut").textContent=money(night);
+$("satOut").textContent=money(sat);
+$("sunOut").textContent=money(sun);
+$("materialOut").textContent=money(materialAmount);
+$("totalOut").textContent=money(base+fuel+rough+pw+tail+night+sat+sun+materialAmount);
+}
 document.querySelectorAll("input,select").forEach(el=>{el.addEventListener("input",update);el.addEventListener("change",update)});
 $("addMaterial").addEventListener("click",addMaterial);$("previewSat").addEventListener("change",()=>{if($("previewSat").checked)$("previewSun").checked=false;update()});$("previewSun").addEventListener("change",()=>{if($("previewSun").checked)$("previewSat").checked=false;update()});
 $("save").addEventListener("click",()=>{$("status").textContent="Demo only — no database changes made."});update();
