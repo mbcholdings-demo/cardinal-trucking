@@ -19,7 +19,7 @@
 (function(){
 "use strict";
 var el=function(id){return document.getElementById(id)},pad=function(n){return String(n).padStart(2,"0")};
-var items=[{id:1,type:"Startup/Shutdown",equipment:"TEST - Dump Truck",start:new Date(2026,10,11,7,0),end:new Date(2026,10,11,7,30),submitted:false}],nextId=2,editId=null,draft=null,pickField=null,ap="AM";
+var items=[{id:1,type:"Startup/Shutdown",equipment:"TEST - Dump Truck",start:new Date(2026,10,11,7,0),end:null,submitted:false}],nextId=2,editId=null,draft=null,pickField=null,ap="AM";
 var format=function(d){return d?(d.getHours()%12||12)+":"+pad(d.getMinutes())+" "+(d.getHours()<12?"AM":"PM"):"—"};
 var valid=function(c){return c.start instanceof Date&&c.end instanceof Date&&!isNaN(+c.start)&&!isNaN(+c.end)&&c.end>c.start};
 var hours=function(c){return valid(c)?(c.end-c.start)/3600000:0};
